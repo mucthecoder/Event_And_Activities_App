@@ -45,8 +45,8 @@ The **Events and Activities App** is designed to coordinate and manage all campu
 - **User Database**: Store user profiles, event interests, and ticketing history.
 
 ### Infrastructure
-- **Hosting and Scaling**: Ensure the server and database infrastructure can handle reasonable volumes of event data, registrations, and ticketing transactions, especially during peak times.
-- **Security**: Implement robust security measures to protect user data, event details, and financial transactions.
+- **Hosting and Scaling**: Ensure the server and database infrastructure on Azure can handle reasonable volumes of event data, registrations, and ticketing transactions, especially during peak times.
+- **Security**: Implement robust security measures on Azure to protect user data, event details, and financial transactions.
 - **Reliability**: Ensure reasonable availability and reliability of the platform, with minimal downtime.
 
 ## Stretch Goals
@@ -55,11 +55,11 @@ The **Events and Activities App** is designed to coordinate and manage all campu
 
 ## Technologies Used
 
-- **Frontend**: React.js with Tailwind CSS or Material-UI for rapid and consistent UI development.
-- **Backend**: Node.js with Express.js to create a scalable and efficient API layer.
+- **Frontend**: Flutter for building a cross-platform mobile application with a responsive and modern UI.
+- **Backend**: Azure services for hosting, managing APIs, and handling databases with scalability and security.
 - **Database**: MongoDB to manage and store all event, user, and ticketing data.
-- **Hosting**: Cloud-based hosting solution for reliable and scalable deployment.
-- **Security**: Implementation of secure authentication and authorization mechanisms.
+- **Hosting**: Azure App Services for reliable and scalable deployment.
+- **Security**: Azure Active Directory for secure authentication and authorization mechanisms.
 
 ## How to Run the Project
 
@@ -67,12 +67,27 @@ The **Events and Activities App** is designed to coordinate and manage all campu
     ```bash
     git clone https://github.com/mucthecoder/Event_And_Activities_App.git
     ```
+2. **Install Dependencies**:
+    ```bash
+    cd Event_And_Activities_App
+    flutter pub get
+    ```
+3. **Run the App**:
+    ```bash
+    flutter run
+    ```
+4. **Access the Backend**:
+    The backend is hosted on Azure, and all API calls are routed through Azure API Management.
 
 ## Contributors
 
-- Massamba Maphalala: [Massamba505](https://github.com/Massamba505)
+- Massamba Sabelo Maphalala: [Massamba505](https://github.com/Massamba505)
 - Siphelele Mthethwa: [SOMEONE1703](https://github.com/SOMEONE1703)
 - Ritanzwe Mbedzi: [Ritanzwe](https://github.com/Ritanzwe)
 - Kananelo Rampele: [Kanizo11](https://github.com/Kanizo11)
 - Mukhunyeledzi Muthuphei: [Toby-Query](https://github.com/Toby-Query)
 - Mukhathutsheli Ndou: [mucthecoder](https://github.com/mucthecoder)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
