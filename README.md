@@ -1,5 +1,10 @@
 # Events and Activities App
 
+From the chaos of missed opportunities and fleeting gatherings, a beacon shall rise, heralding a new era of unity and shared experiences.
+And we shall call it **Eventos**, for it shall be the thread that weaves together the fabric of our lives, connecting hearts and minds in a tapestry of unforgettable moments.
+
+
+
 ## Introduction
 
 This is a group project for the Software Design Project (COMS3011A) module. We, the following students, have collaborated to create this project:
