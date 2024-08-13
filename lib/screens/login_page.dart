@@ -3,7 +3,7 @@ import 'signup_page.dart';
 import 'package:event_and_activities_app/widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -15,17 +15,17 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           height: height,
           child: Stack(
             children: <Widget>[
               Positioned(
                 top: -height * .15,
                 right: -MediaQuery.of(context).size.width * .4,
-                child: BezierContainer(),
+                child: const BezierContainer(),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,50 +73,50 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Column(
                         children: <Widget>[
-                          SizedBox(
+                          const SizedBox(
                             height: 80,
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               vertical: 10,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
+                                const Text(
                                   "Email",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 TextField(
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                   ),
                                   textAlign: TextAlign.start,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     hintText: "email",
-                                    suffixIcon: Icon(
+                                    suffixIcon: const Icon(
                                       Icons.email,
                                       color: Colors.black54,
                                     ),
                                     border: OutlineInputBorder(
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                         color: Colors.red,
                                       ),
                                       borderRadius: BorderRadius.circular(
                                         15,
                                       ),
                                     ),
-                                    fillColor: Color(
+                                    fillColor: const Color(
                                       0xfff3f3f4,
                                     ),
                                     filled: true,
@@ -126,25 +126,25 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
+                            margin: const EdgeInsets.symmetric(vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
+                                const Text(
                                   "Password",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 TextField(
                                   obscureText: true,
                                   decoration: InputDecoration(
                                     hintText: "password",
-                                    suffixIcon: Icon(
+                                    suffixIcon: const Icon(
                                       Icons.visibility,
                                       color: Colors.black54,
                                     ),
@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                                         15,
                                       ),
                                     ),
-                                    fillColor: Color(
+                                    fillColor: const Color(
                                       0xfff3f3f4,
                                     ),
                                     filled: true,
@@ -165,19 +165,19 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Container(
                         width: MediaQuery.of(
                           context,
                         ).size.width,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 15,
                         ),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(
                               15,
                             ),
@@ -185,14 +185,14 @@ class _LoginPageState extends State<LoginPage> {
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                                 color: Colors.grey.shade200,
-                                offset: Offset(2, 4),
+                                offset: const Offset(2, 4),
                                 blurRadius: 5,
                                 spreadRadius: 2),
                           ],
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: const [
+                            colors: [
                               Colors.blue,
                               Colors.lightBlue,
                             ],
@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                             //   ),
                             // );
                           },
-                          child: Text(
+                          child: const Text(
                             'Login',
                             style: TextStyle(
                               fontSize: 20,
@@ -217,11 +217,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 10,
                         ),
                         alignment: Alignment.centerRight,
-                        child: Text(
+                        child: const Text(
                           'Forgot Password ?',
                           style: TextStyle(
                             fontSize: 14,
@@ -230,11 +230,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           vertical: 10,
                         ),
-                        child: Row(
-                          children: const <Widget>[
+                        child: const Row(
+                          children: <Widget>[
                             SizedBox(
                               width: 20,
                             ),
@@ -269,10 +269,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Container(
                         height: 50,
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           vertical: 20,
                         ),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(
                             Radius.circular(
                               10,
@@ -284,7 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Color(0xff1959a9),
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(
@@ -296,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 alignment: Alignment.center,
-                                child: Text(
+                                child: const Text(
                                   'f',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -309,7 +309,7 @@ class _LoginPageState extends State<LoginPage> {
                             Expanded(
                               flex: 5,
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Color(
                                     0xFF0389F6,
                                   ),
@@ -323,7 +323,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 alignment: Alignment.center,
-                                child: Text(
+                                child: const Text(
                                   'Log in with Facebook',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -336,7 +336,7 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       InkWell(
@@ -344,21 +344,21 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpPage(),
+                              builder: (context) => const SignUpPage(),
                             ),
                           );
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             vertical: 20,
                           ),
-                          padding: EdgeInsets.all(
+                          padding: const EdgeInsets.all(
                             15,
                           ),
                           alignment: Alignment.bottomCenter,
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
                                 'Don\'t have an account ?',
                                 style: TextStyle(
@@ -395,23 +395,23 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pop(context);
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                     ),
                     child: Row(
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             left: 0,
                             top: 10,
                             bottom: 10,
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.keyboard_arrow_left,
                             color: Colors.black,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Back',
                           style: TextStyle(
                             fontSize: 15,
