@@ -4,7 +4,7 @@ import 'package:event_and_activities_app/widget/bezierContainer.dart';
 import 'package:event_and_activities_app/screens/login_page.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key, this.title}) : super(key: key);
+  const SignUpPage({super.key, this.title});
 
   final String? title;
 
@@ -27,6 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 right: -MediaQuery.of(context).size.width * .4,
                 child: BezierContainer(),
               ),
+              TextField(),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: SingleChildScrollView(

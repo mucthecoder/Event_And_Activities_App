@@ -414,7 +414,7 @@ class _LoginPageState extends State<LoginPage> {
                         const Text(
                           'Back',
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
