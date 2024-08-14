@@ -1,3 +1,4 @@
+import 'package:event_and_activities_app/services/validity_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:event_and_activities_app/widget/bezierContainer.dart';
 import 'package:event_and_activities_app/screens/login_page.dart';
@@ -16,7 +17,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _confirmedPasswordController = TextEditingController();
+  final TextEditingController _confirmedPasswordController =
+      TextEditingController();
 
   bool _obscureText = true;
 
@@ -115,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     textAlign: TextAlign.start,
                                     obscureText: false,
                                     decoration: InputDecoration(
-                                      hintText: "username",
+                                      // hintText: "username",
                                       suffixIcon: const Icon(
                                         Icons.person,
                                         color: Colors.black54,
@@ -165,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     textAlign: TextAlign.start,
                                     obscureText: false,
                                     decoration: InputDecoration(
-                                      hintText: "email",
+                                      // hintText: "email",
                                       suffixIcon: const Icon(
                                         Icons.email,
                                         color: Colors.black54,
@@ -181,13 +183,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                       filled: true,
                                     ),
                                     validator: (value) {
-                                      if (value == null || value.isEmpty) {
+                                      if (ValidityChecker.nullInput(value) ||
+                                          ValidityChecker.emptyInput(value!)) {
                                         return 'Please enter Email';
                                       }
-                                      final emailRegExp = RegExp(
-                                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                                      );
-                                      if (!emailRegExp.hasMatch(value)) {
+                                      if (!ValidityChecker.isValidEmail(
+                                          value)) {
                                         return 'Please enter a valid email';
                                       }
                                       return null;
@@ -221,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     textAlign: TextAlign.start,
                                     obscureText: _obscureText,
                                     decoration: InputDecoration(
-                                      hintText: "password",
+                                      // hintText: "password",
                                       suffixIcon: IconButton(
                                         onPressed: () {
                                           setState(() {
@@ -246,7 +247,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       filled: true,
                                     ),
                                     validator: (value) {
-                                      if (value == null || value.isEmpty) {
+                                      if (ValidityChecker.nullInput(value) ||
+                                          ValidityChecker.emptyInput(value!)) {
                                         return 'Please enter Password';
                                       }
                                       return null;
@@ -274,11 +276,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                   TextFormField(
                                     validator: (value) {
-                                      if (value == null || value.isEmpty) {
+                                      if (ValidityChecker.nullInput(value) ||
+                                          ValidityChecker.emptyInput(value!)) {
                                         return 'Please enter Password';
                                       }
-                                      if (value !=
-                                          _passwordController.text) {
+                                      if (value != _passwordController.text) {
                                         return 'Passwords do not match';
                                       }
                                       return null;
@@ -290,7 +292,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     textAlign: TextAlign.start,
                                     obscureText: _obscureText,
                                     decoration: InputDecoration(
-                                      hintText: "password",
+                                      // hintText: "password",
                                       suffixIcon: IconButton(
                                         onPressed: () {
                                           setState(() {
@@ -357,14 +359,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              if (_formKey.currentState?.validate() ??
-                                  false) {
-                                final String email =
-                                    _emailController.text;
+                              if (_formKey.currentState?.validate() ?? false) {
+                                final String email = _emailController.text;
                                 final String password =
                                     _passwordController.text;
-                                final String name =
-                                    _nameController.text;
+                                final String name = _nameController.text;
                                 final String confirmPassword =
                                     _confirmedPasswordController.text;
 
@@ -372,8 +371,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 print("Name: $name");
                                 print("Email: $email");
                                 print("Password: $password");
-                                print(
-                                    "Confirmed Password: $confirmPassword");
+                                print("Confirmed Password: $confirmPassword");
                               }
                             },
                             child: const Text(
@@ -390,14 +388,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         InkWell(
                           onTap: () {
-                           Navigator.push(
-                             context,
-                             MaterialPageRoute(
-                               builder: (context) => const LoginPage(),
-                             ),
-                           );
-                            if (_formKey.currentState?.validate() ??
-                                false) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ),
+                            );
+                            if (_formKey.currentState?.validate() ?? false) {
                               // Additional logic, like form submission or navigation
                             }
                           },
@@ -408,8 +405,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             padding: const EdgeInsets.all(15),
                             alignment: Alignment.bottomCenter,
                             child: const Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
                                   'Already have an account ?',

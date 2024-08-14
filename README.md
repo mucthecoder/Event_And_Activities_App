@@ -85,7 +85,7 @@ The **Events and Activities App** is designed to coordinate and manage all campu
     The backend is hosted on Azure, and all API calls are routed through Azure API Management.
 3. **Run the Tests**:
     ```bash
-    flutter test
+    flutter test --coverage
     ```
 
 ## Contributors

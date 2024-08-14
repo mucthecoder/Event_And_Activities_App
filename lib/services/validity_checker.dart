@@ -31,6 +31,14 @@ class ValidityChecker {
         isValidPassword(password);
   }
 
+  static bool emptyInput(String input) {
+    return input.isEmpty;
+  }
+
+  static bool nullInput(String? input) {
+    return input == null;
+  }
+
   // void addUser(String email, String name) {
   //   existingEmails.add(email);
   //   existingNames.add(name);
