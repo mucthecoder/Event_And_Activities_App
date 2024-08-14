@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'customClipper.dart';
 
 class BezierContainer extends StatelessWidget {
-  const BezierContainer({Key? key}) : super(key: key);
+  const BezierContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class BezierContainer extends StatelessWidget {
           child: Container(
             height: MediaQuery.of(context).size.height * .5,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
