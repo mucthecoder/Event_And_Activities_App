@@ -18,7 +18,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           height: height,
           child: Stack(
             children: <Widget>[
