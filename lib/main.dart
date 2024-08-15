@@ -1,6 +1,8 @@
+import 'package:event_and_activities_app/screens/login_page.dart';
+import 'package:event_and_activities_app/screens/signup_page.dart';
 import 'package:event_and_activities_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 void main() {
   runApp(const MyApp());
 }
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CodiaPage(),
+      home: LoginPage(),
     );
   }
 }
