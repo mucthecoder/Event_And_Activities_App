@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:event_and_activities_app/screens/forgot_password.dart';
 import 'package:event_and_activities_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,7 +57,7 @@ late SharedPreferences prefs;
         const SnackBar(content: Text('Login successful')),
       );
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CodiaPage()));
+          context, MaterialPageRoute(builder: (context) => const CodiaPage()));
     } else {
       print('fail');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -158,18 +159,18 @@ late SharedPreferences prefs;
                           });
                         },
                       ),
-                      helperText: 'Must contain 8 characters.',
+                      helperText: 'Must contain 3 characters.',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
-                      } else if (value.length < 8) {
+                      } else if (value.length < 3) {
                         return 'Password must be at least 8 characters long';
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 30,),
+                  const SizedBox(height: 30,),
 
                   ElevatedButton(
                     onPressed: () {
@@ -186,6 +187,21 @@ late SharedPreferences prefs;
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+                  SizedBox(height: 10,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                    },
+                    child: const Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                     "Forgot Password?",
+
+                      style: TextStyle(color: Colors.blue,),
+                    ),
+                  ),
+                  ),
+
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
@@ -197,14 +213,14 @@ late SharedPreferences prefs;
                     ),
                   ),
 
-   SizedBox(height: 30,),
+   const SizedBox(height: 30,),
                  Center( child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      IconButton(onPressed: () {}, icon: Icon(Icons.facebook),iconSize: 35,),
+                      IconButton(onPressed: () {}, icon: const Icon(Icons.facebook),iconSize: 35,),
                      // IconButton(onPressed:(){} , icon: Icon(Icons.twitter)),
-                      IconButton(onPressed: (){}, icon: Icon(Icons.apple_rounded),iconSize: 35,)
+                      IconButton(onPressed: (){}, icon: const Icon(Icons.apple_rounded),iconSize: 35,)
                     ],
                   )
                  ),

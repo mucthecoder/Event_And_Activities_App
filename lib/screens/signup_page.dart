@@ -181,13 +181,13 @@ class _SignupPageState extends State<SignupPage> {
                           });
                         },
                       ),
-                      helperText: 'Must contain 8 characters.',
+                      helperText: 'Must contain 3 characters.',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
-                      } else if (value.length < 8) {
-                        return 'Password must be at least 8 characters long';
+                      } else if (value.length < 3) {
+                        return 'Password must be at least 3 characters long';
                       }
                       return null;
                     },
@@ -246,7 +246,10 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                      );
                     },
                     child: const Text(
                       "Already have an account? Login",
