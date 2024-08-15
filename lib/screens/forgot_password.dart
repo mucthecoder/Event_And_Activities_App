@@ -3,43 +3,50 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final _formKey = GlobalKey<FormState>();
+ // final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 
   void _resetPassword() async {
-    if (_formKey.currentState?.validate() ?? false) {
+
       try {
+
         var response = await http.post(
-          Uri.parse('http://localhost:3000/api/auth/forgot-password'), // Ensure this URL is correct
+          Uri.parse('http://localhost:3000/api/auth/forgot-password'),
           body: jsonEncode({"email": _emailController.text}),
           headers: {'Content-Type': 'application/json'},
         );
 
+        print("Response status code: ${response.statusCode}");
         var data = jsonDecode(response.body);
 
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Password reset email sent')),
-          );
-        }
 
-        else {
+        if (response.statusCode == 200 && data['message'] == 'Email sent') {
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Password reset email sent')),
+          );
+        } else {
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Failed: ${data['error']}')),
           );
         }
       } catch (e) {
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('An error occurred: $e')),
         );
       }
     }
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +55,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -58,8 +65,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
-            SizedBox(height: 30),
-            Align(
+            const SizedBox(height: 30),
+            const Align(
               alignment: Alignment.topCenter,
               child: Text(
                 'Forgot Password',
@@ -100,10 +107,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 return null;
               },
             ),
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: _resetPassword,
-              child: const Text('Send Reset Instruction'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
                 backgroundColor: Colors.blue,
@@ -111,8 +117,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
+              child: const Text('Send Reset Instruction'),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),
