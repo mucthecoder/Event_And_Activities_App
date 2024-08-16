@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'signup_page.dart';
 import 'package:http/http.dart' as http;
-import 'package:event_and_activities_app/widget/bezierContainer.dart';
-import 'package:event_and_activities_app/services/validity_checker.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -52,14 +51,25 @@ late SharedPreferences prefs;
     var data = jsonDecode(response.body);
 
     if (response.statusCode == 201 && data['token'] != null) {
-      print('pass');
+      String token = data['token'];
+
+      // Print the token to the console for debugging
+      print('Token: $token');
+
+      // Store the token in SharedPreferences
+      await prefs.setString('token', token);
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successful')),
       );
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const CodiaPage()));
+
+      // Navigate to the next page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const CodiaPage()),
+      );
     } else {
-      print('fail');
+      print('Login failed');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${data['error']}')),
       );

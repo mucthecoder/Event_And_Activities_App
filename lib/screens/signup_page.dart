@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:event_and_activities_app/services/validity_checker.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_page.dart';
 class SignupPage extends StatefulWidget {
@@ -27,34 +28,41 @@ class _SignupPageState extends State<SignupPage> {
       String lastName = _lastNameController.text;
       String email = _emailController.text;
       String password = _passwordController.text;
-      String confirmPassword = _confirmPasswordController.text;
+
       var regBody = {
         "fullname": "$firstName $lastName",
         "email": email,
         "password": password,
-
       };
 
-
       var response = await http.post(
-          Uri.parse('http://localhost:3000/api/auth/signup'),
-          body: jsonEncode(regBody),
-          headers: {'Content-Type': 'application/json'},
-
-
+        Uri.parse('http://localhost:3000/api/auth/signup'),
+        body: jsonEncode(regBody),
+        headers: {'Content-Type': 'application/json'},
       );
+
       if (response.statusCode == 201) {
+        var jsonResponse = jsonDecode(response.body);
+        String token = jsonResponse['token'];
+        print("Token: $token");
+        // Store the token in SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration successful')),
         );
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration failed')),
         );
       }
     }
-
   }
 
   @override

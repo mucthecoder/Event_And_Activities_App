@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'login_page.dart';
 
 class CodiaPage extends StatefulWidget {
   const CodiaPage({super.key});
@@ -7,8 +10,22 @@ class CodiaPage extends StatefulWidget {
   State<StatefulWidget> createState() => _CodiaPage();
 }
 
-class _CodiaPage extends State<CodiaPage> {
+class _CodiaPage extends State<CodiaPage>
+with SingleTickerProviderStateMixin {
+
+
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    });
+  }
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
