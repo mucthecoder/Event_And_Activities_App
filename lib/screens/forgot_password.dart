@@ -16,37 +16,37 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController _emailController = TextEditingController();
 
   void _resetPassword() async {
+    try {
+      var response = await http.post(
+        Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/forgot-password'),
+        body: jsonEncode({"email": _emailController.text}),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-      try {
+      print("Response status code: ${response.statusCode}");
+      var data = jsonDecode(response.body);
 
-        var response = await http.post(
-          Uri.parse('http://localhost:3000/api/auth/forgot-password'),
-          body: jsonEncode({"email": _emailController.text}),
-          headers: {'Content-Type': 'application/json'},
-        );
-
-        print("Response status code: ${response.statusCode}");
-        var data = jsonDecode(response.body);
-
-
-        if (response.statusCode == 200 && data['message'] == 'Email sent') {
-
+      if (response.statusCode == 200) {
+        if (data['message'] == 'Email sent') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Password reset email sent')),
           );
         } else {
-
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed: ${data['error']}')),
+            SnackBar(content: Text('response: ${data['message']}')),
           );
         }
-      } catch (e) {
-
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred: $e')),
+          SnackBar(content: Text('Failed: ${data['error'] ?? 'Unknown error occurred'}')),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred: $e')),
+      );
     }
+  }
 
 
 

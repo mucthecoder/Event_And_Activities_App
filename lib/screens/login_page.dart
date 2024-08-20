@@ -43,7 +43,7 @@ late SharedPreferences prefs;
     };
 
     var response = await http.post(
-      Uri.parse('http://localhost:3000/api/auth/login'),
+      Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/login'),
       body: jsonEncode(loginBody),
       headers: {'Content-Type': 'application/json'},
     );
@@ -54,7 +54,7 @@ late SharedPreferences prefs;
       String token = data['token'];
 
       // Print the token to the console for debugging
-      print('Token: $token');
+      print('Tokeen: $token');
 
       // Store the token in SharedPreferences
       await prefs.setString('token', token);

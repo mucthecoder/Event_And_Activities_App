@@ -23,47 +23,57 @@ class _SignupPageState extends State<SignupPage> {
   bool _obscureConfirmPassword = true;
 
   void Registeruser() async {
-    if (_formKey.currentState!.validate()) {
-      String firstName = _firstNameController.text;
-      String lastName = _lastNameController.text;
-      String email = _emailController.text;
-      String password = _passwordController.text;
+    try {
+      if (_formKey.currentState!.validate()) {
+        String firstName = _firstNameController.text;
+        String lastName = _lastNameController.text;
+        String email = _emailController.text;
+        String password = _passwordController.text;
 
-      var regBody = {
-        "fullname": "$firstName $lastName",
-        "email": email,
-        "password": password,
-      };
+        var regBody = {
+          "fullname": "$firstName $lastName",
+          "email": email,
+          "password": password,
+        };
 
-      var response = await http.post(
-        Uri.parse('http://localhost:3000/api/auth/signup'),
-        body: jsonEncode(regBody),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 201) {
-        var jsonResponse = jsonDecode(response.body);
-        String token = jsonResponse['token'];
-        print("Token: $token");
-        // Store the token in SharedPreferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', token);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration successful')),
+        var response = await http.post(
+          Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/signup'),
+          body: jsonEncode(regBody),
+          headers: {'Content-Type': 'application/json'},
         );
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration failed')),
-        );
+        if (response.statusCode == 201) {
+          var jsonResponse = jsonDecode(response.body);
+          String token = jsonResponse['token'];
+          print("Token: $token");
+
+          // Store the token in SharedPreferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', token);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Registration successful')),
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Registration failed')),
+          );
+        }
       }
+    } catch (e, stackTrace) {
+      print('Error: $e');
+      print('Stack Trace: $stackTrace');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred: $e')),
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
