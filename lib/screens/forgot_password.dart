@@ -1,18 +1,17 @@
+import 'package:event_and_activities_app/screens/verify_account.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
   @override
-  _ForgotPasswordPageState createState() {
-    return _ForgotPasswordPageState();
-  }
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
- // final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 
   void _resetPassword() async {
@@ -27,15 +26,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       var data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        if (data['message'] == 'Email sent') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password reset email sent')),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('response: ${data['message']}')),
-          );
-        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password reset email sent')),
+        );
+
+        // Navigate to VerifyTokenScreen with the email
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => VerifyTokenScreen(email: _emailController.text)),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed: ${data['error'] ?? 'Unknown error occurred'}')),
@@ -47,8 +46,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
