@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'login_page.dart';
 
 class CodiaPage extends StatefulWidget {
@@ -10,10 +9,7 @@ class CodiaPage extends StatefulWidget {
   State<StatefulWidget> createState() => _CodiaPage();
 }
 
-class _CodiaPage extends State<CodiaPage>
-with SingleTickerProviderStateMixin {
-
-
+class _CodiaPage extends State<CodiaPage> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -26,6 +22,7 @@ with SingleTickerProviderStateMixin {
       );
     });
   }
+
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
