@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -197,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   GestureDetector(
