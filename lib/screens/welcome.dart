@@ -1,31 +1,31 @@
+import 'package:event_and_activities_app/screens/onboarding1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'login_page.dart';
 
-class CodiaPage extends StatefulWidget {
-  const CodiaPage({super.key});
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _CodiaPage();
+  State<StatefulWidget> createState() => _WelcomeScreen();
 }
 
-class _CodiaPage extends State<CodiaPage>
-with SingleTickerProviderStateMixin {
-
-
+class _WelcomeScreen extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        MaterialPageRoute(builder: (context) => const FirstOnboarding()),
       );
     });
   }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -33,10 +33,10 @@ with SingleTickerProviderStateMixin {
     return Container(
       color: Colors.white,
       child: Container(
-        width: 375,
-        height: 812,
-        decoration: BoxDecoration(
-          color: const Color(0xfff7f8fa),
+        width: screenWidth,
+        height: screenHeight,
+        decoration: const BoxDecoration(
+          color: Color(0xfff7f8fa),
         ),
         child: Stack(
           children: [
@@ -64,7 +64,7 @@ with SingleTickerProviderStateMixin {
               left: 0,
               right: 0,
               top: 0,
-              bottom: 0,
+              //bottom: 0,
               child: Image.asset(
                 'assets/rect24.png',
                 fit: BoxFit.fitWidth,
@@ -86,22 +86,20 @@ with SingleTickerProviderStateMixin {
             ),
             Positioned(
               left: 0,
-              top: 0,
+              top: screenHeight / 4,
               right: 0,
-              bottom: 0,
+              //bottom: 0,
               child: Image.asset(
                 'assets/secondBottomRect.png',
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
               ),
             ),
             Positioned(
               left: 0,
-              right: 0,
               top: 0,
-              bottom: 0,
               child: Image.asset(
                 'assets/topRect.png',
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
               ),
             ),
             const Center(

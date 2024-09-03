@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_page.dart';
+
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -74,10 +75,10 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -102,7 +103,8 @@ class _SignupPageState extends State<SignupPage> {
                           children: [
                             const Text(
                               'First Name:',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 5),
                             TextFormField(
@@ -128,7 +130,8 @@ class _SignupPageState extends State<SignupPage> {
                           children: [
                             const Text(
                               'Last Name:',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 5),
                             TextFormField(
@@ -154,7 +157,8 @@ class _SignupPageState extends State<SignupPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'E-mail:',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -168,7 +172,8 @@ class _SignupPageState extends State<SignupPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
-                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                          .hasMatch(value)) {
                         return 'Please enter a valid email address';
                       }
                       return null;
@@ -179,7 +184,8 @@ class _SignupPageState extends State<SignupPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Password:',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -191,7 +197,9 @@ class _SignupPageState extends State<SignupPage> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
@@ -215,7 +223,8 @@ class _SignupPageState extends State<SignupPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Confirm Password:',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -227,7 +236,9 @@ class _SignupPageState extends State<SignupPage> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                          _obscureConfirmPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
@@ -266,7 +277,8 @@ class _SignupPageState extends State<SignupPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
                       );
                     },
                     child: const Text(

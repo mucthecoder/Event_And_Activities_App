@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'signup_page.dart';
 import 'package:http/http.dart' as http;
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -21,12 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-
   bool _obscurePassword = true;
 
-late SharedPreferences prefs;
+  late SharedPreferences prefs;
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -36,6 +34,7 @@ late SharedPreferences prefs;
   initSharedPrefs() async {
     prefs = await SharedPreferences.getInstance();
   }
+
   void loginUser() async {
     var loginBody = {
       "email": _emailController.text,
@@ -66,7 +65,7 @@ late SharedPreferences prefs;
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const CodiaPage()),
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
       );
     } else {
       print('Login failed');
@@ -76,10 +75,10 @@ late SharedPreferences prefs;
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -101,9 +100,7 @@ late SharedPreferences prefs;
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                          ],
+                          children: [],
                         ),
                       ),
                       SizedBox(width: 16),
@@ -111,9 +108,7 @@ late SharedPreferences prefs;
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             SizedBox(height: 5),
-
                           ],
                         ),
                       ),
@@ -124,7 +119,8 @@ late SharedPreferences prefs;
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'E-mail:',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -138,7 +134,8 @@ late SharedPreferences prefs;
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
-                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                          .hasMatch(value)) {
                         return 'Please enter a valid email address';
                       }
                       return null;
@@ -149,7 +146,8 @@ late SharedPreferences prefs;
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Password:',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -161,7 +159,9 @@ late SharedPreferences prefs;
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
@@ -180,12 +180,13 @@ late SharedPreferences prefs;
                       return null;
                     },
                   ),
-                  const SizedBox(height: 30,),
-
+                  const SizedBox(
+                    height: 30,
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                              loginUser();
+                        loginUser();
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -197,43 +198,59 @@ late SharedPreferences prefs;
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPasswordPage()));
                     },
                     child: const Align(
                       alignment: Alignment.bottomRight,
                       child: Text(
-                     "Forgot Password?",
-
-                      style: TextStyle(color: Colors.blue,),
+                        "Forgot Password?",
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
                     ),
                   ),
-                  ),
-
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignupPage()));
                     },
                     child: const Text(
                       "Dont  have an account? Register",
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
-
-   const SizedBox(height: 30,),
-                 Center( child: Row(
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                      child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.facebook),iconSize: 35,),
-                     // IconButton(onPressed:(){} , icon: Icon(Icons.twitter)),
-                      IconButton(onPressed: (){}, icon: const Icon(Icons.apple_rounded),iconSize: 35,)
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.facebook),
+                        iconSize: 35,
+                      ),
+                      // IconButton(onPressed:(){} , icon: Icon(Icons.twitter)),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.apple_rounded),
+                        iconSize: 35,
+                      )
                     ],
-                  )
-                 ),
+                  )),
                 ],
               ),
             ),
