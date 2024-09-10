@@ -13,18 +13,27 @@ class VerifyTokenScreen extends StatefulWidget {
 }
 
 class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
-  final TextEditingController _tokenController = TextEditingController();
+  final TextEditingController _token1Controller = TextEditingController();
+  final TextEditingController _token2Controller = TextEditingController();
+  final TextEditingController _token3Controller = TextEditingController();
+  final TextEditingController _token4Controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<void> verifyToken(String token, BuildContext context) async {
-    try {
-      print('Token sent: $token');
+  Future<void> verifyToken(BuildContext context) async {
+    String token = _token1Controller.text +
+        _token2Controller.text +
+        _token3Controller.text +
+        _token4Controller.text;
 
-      final response = await http.get(
-        Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/reset-password/$token?email=${widget.email}'),
+    try {
+      final response = await http.post(
+        Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/reset-password/$token'),
         headers: {
           'Content-Type': 'application/json',
         },
+        body: jsonEncode({
+          'email': widget.email,
+        }),
       );
 
       print('Response status: ${response.statusCode}');
@@ -51,8 +60,20 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
     }
   }
 
+
+
+  void _moveFocus(BuildContext context, FocusNode currentNode, FocusNode nextNode) {
+    currentNode.unfocus();
+    FocusScope.of(context).requestFocus(nextNode);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final FocusNode _focusNode1 = FocusNode();
+    final FocusNode _focusNode2 = FocusNode();
+    final FocusNode _focusNode3 = FocusNode();
+    final FocusNode _focusNode4 = FocusNode();
+
     return Scaffold(
       appBar: AppBar(title: Text('Verify Token')),
       body: Padding(
@@ -61,26 +82,20 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                controller: _tokenController,
-                decoration: InputDecoration(
-                  labelText: 'Enter the 4-digit token',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the token';
-                  }
-                  return null;
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildTokenBox(_token1Controller, _focusNode1, context, _focusNode2),
+                  _buildTokenBox(_token2Controller, _focusNode2, context, _focusNode3),
+                  _buildTokenBox(_token3Controller, _focusNode3, context, _focusNode4),
+                  _buildTokenBox(_token4Controller, _focusNode4, context, null),
+                ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    verifyToken(_tokenController.text, context);
+                    verifyToken(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -98,5 +113,34 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
       ),
     );
   }
-}
 
+  Widget _buildTokenBox(TextEditingController controller, FocusNode currentNode, BuildContext context, FocusNode? nextNode) {
+    return SizedBox(
+      width: 50,
+      child: TextFormField(
+        controller: controller,
+        focusNode: currentNode,
+        maxLength: 1,
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          counterText: "", // Hide the character counter
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+        onChanged: (value) {
+          if (value.length == 1 && nextNode != null) {
+            _moveFocus(context, currentNode, nextNode);
+          }
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return '';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+}
