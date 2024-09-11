@@ -1,8 +1,7 @@
-import 'package:event_and_activities_app/screens/verify_account.dart';
+import 'package:event_and_activities_app/screens/authentication/verify_account.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -17,7 +16,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void _resetPassword() async {
     try {
       var response = await http.post(
-        Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/forgot-password'),
+        Uri.parse(
+            'https://eventsapi3a.azurewebsites.net/api/auth/forgot-password'),
         body: jsonEncode({"email": _emailController.text}),
         headers: {'Content-Type': 'application/json'},
       );
@@ -33,11 +33,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         // Navigate to VerifyTokenScreen with the email
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => VerifyTokenScreen(email: _emailController.text)),
+          MaterialPageRoute(
+              builder: (context) =>
+                  VerifyTokenScreen(email: _emailController.text)),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed: ${data['error'] ?? 'Unknown error occurred'}')),
+          SnackBar(
+              content:
+                  Text('Failed: ${data['error'] ?? 'Unknown error occurred'}')),
         );
       }
     } catch (e) {

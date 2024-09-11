@@ -1,10 +1,6 @@
 import 'dart:convert';
 
-import 'package:event_and_activities_app/screens/forgot_password.dart';
-import 'package:event_and_activities_app/screens/onboarding1.dart';
-import 'package:event_and_activities_app/screens/onboarding2.dart';
-import 'package:event_and_activities_app/screens/onboarding3.dart';
-import 'package:event_and_activities_app/screens/profilescreen.dart';
+import 'package:event_and_activities_app/screens/authentication/forgot_password.dart';
 import 'package:event_and_activities_app/screens/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ProfileImagePicker()),
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
       );
     } else {
       print('Login failed');

@@ -1,8 +1,8 @@
-import 'package:event_and_activities_app/screens/onboarding2.dart';
+import 'package:event_and_activities_app/screens/onboarding/onboarding2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'login_page.dart';
+import '../authentication/login_page.dart';
 
 class FirstOnboarding extends StatefulWidget {
   const FirstOnboarding({super.key});
