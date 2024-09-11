@@ -32,6 +32,7 @@ class SetNewPasswordScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
+                // Ensure the passwords match
                 if (passwordController.text == confirmPasswordController.text) {
                   await setNewPassword(passwordController.text, context);
                 } else {
@@ -49,20 +50,33 @@ class SetNewPasswordScreen extends StatelessWidget {
   }
 
   Future<void> setNewPassword(String newPassword, BuildContext context) async {
-    final response = await http.post(
-      Uri.parse('https://yourapi.com/set-new-password'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'userId': userId, 'newPassword': newPassword}),
-    );
-
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password updated successfully')),
+    try {
+      final response = await http.post(
+        Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/set-new-password'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'userId': userId,
+          'newPassword': newPassword,
+        }),
       );
-      Navigator.popUntil(context, (route) => route.isFirst); // Navigate to login
-    } else {
+
+      // Handle success
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Password updated successfully')),
+        );
+        Navigator.popUntil(context, (route) => route.isFirst); // Navigate to login or home screen
+      } else {
+        // Handle failure
+        final errorMessage = jsonDecode(response.body)['error'] ?? 'Password reset failed';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
+    } catch (e) {
+      // Handle error in the request
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password reset failed')),
+        SnackBar(content: Text('An error occurred: $e')),
       );
     }
   }
