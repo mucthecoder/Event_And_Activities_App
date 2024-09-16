@@ -30,9 +30,9 @@ class _SecondOnboarding extends State<SecondOnboarding>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return SingleChildScrollView(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth / 20),
           width: screenWidth,
           height: screenHeight,
@@ -71,33 +71,33 @@ class _SecondOnboarding extends State<SecondOnboarding>
             ],
           ),
         ),
-        floatingActionButton: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: screenWidth / 100, vertical: screenHeight / 20),
-          child: Padding(
-            padding: EdgeInsets.only(left: screenWidth / 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SvgPicture.asset(
-                  'assets/load2.svg',
+      ),
+      floatingActionButton: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: screenWidth / 100, vertical: screenHeight / 20),
+        child: Padding(
+          padding: EdgeInsets.only(left: screenWidth / 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SvgPicture.asset(
+                'assets/load2.svg',
+                width: 90,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LastOnboarding()),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/next.svg',
                   width: 90,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LastOnboarding()),
-                    );
-                  },
-                  child: SvgPicture.asset(
-                    'assets/next.svg',
-                    width: 90,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

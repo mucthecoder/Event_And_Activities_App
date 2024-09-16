@@ -31,9 +31,9 @@ class _LastOnboarding extends State<LastOnboarding>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return SingleChildScrollView(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth / 20),
           width: screenWidth,
           height: screenHeight,
