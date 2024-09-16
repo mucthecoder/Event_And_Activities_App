@@ -1,10 +1,10 @@
-import 'package:event_and_activities_app/navbar_model.dart';
+//import 'package:event_and_activities_app/navbar_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 //import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../navbar.dart'; // Assuming this is your custom NavBar widget
+//import '../navbar.dart'; // Assuming this is your custom NavBar widget
 
 class Home extends StatefulWidget {
   const Home({super.key});
