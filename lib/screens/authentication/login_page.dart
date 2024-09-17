@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:event_and_activities_app/screens/authentication/forgot_password.dart';
-import 'package:event_and_activities_app/screens/welcome.dart';
+import 'package:event_and_activities_app/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'signup_page.dart';
 import 'package:http/http.dart' as http;
@@ -23,10 +23,10 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
 
   late SharedPreferences prefs;
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initSharedPrefs();
   }
@@ -52,9 +52,6 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 201 && data['token'] != null) {
       String token = data['token'];
 
-      // Print the token to the console for debugging
-      print('Tokeen: $token');
-
       // Store the token in SharedPreferences
       await prefs.setString('token', token);
 
@@ -65,12 +62,65 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+        MaterialPageRoute(builder: (context) => const Home()),
       );
     } else {
-      print('Login failed');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${data['error']}')),
+      );
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    try {
+      // Start the sign-in process
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final String? idToken = googleAuth.idToken;
+
+      if (idToken != null) {
+        // Send the ID token to your backend
+        var response = await http.post(
+          Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/login'),
+          body: jsonEncode({"googleIdToken": idToken}),
+          headers: {'Content-Type': 'application/json'},
+        );
+
+        var data = jsonDecode(response.body);
+
+        if (response.statusCode == 201 ) {
+          String token = data['token'];
+
+          // Store the token in SharedPreferences
+          await prefs.setString('token', token);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login successful')),
+          );
+
+          // Navigate to the next page
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Home()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Google login failed: ${data['error']}')),
+          );
+        }
+      }
+    } catch (error) {
+      print('Google Sign-In failed: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google Sign-In failed')),
       );
     }
   }
@@ -95,32 +145,13 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
-                  const Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 5),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'E-mail:',
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -147,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Password:',
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -198,15 +229,14 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ForgotPasswordPage()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordPage()),
+                      );
                     },
                     child: const Align(
                       alignment: Alignment.bottomRight,
@@ -222,35 +252,26 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignupPage()),
+                      );
                     },
                     child: const Text(
-                      "Dont  have an account? Register",
+                      "Don't have an account? Register",
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.facebook),
-                        iconSize: 35,
-                      ),
-                      // IconButton(onPressed:(){} , icon: Icon(Icons.twitter)),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.apple_rounded),
-                        iconSize: 35,
-                      )
-                    ],
-                  )),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        loginWithGoogle(); // Call Google login
+                      },
+                      icon: const Icon(Icons.login),
+                      label: const Text("Login with Google"),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -260,3 +281,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
