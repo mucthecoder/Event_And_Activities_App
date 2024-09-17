@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService {
   final String baseUrl =
-      "http://localhost:3000/api/auth"; // Update this with your actual API base URL
+      "https://eventsapi3a.azurewebsites.net/api/auth"; // Update this with your actual API base URL
 
   Future<http.Response> login(String email, String password) async {
     final response = await http.post(
