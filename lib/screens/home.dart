@@ -1,20 +1,12 @@
-//import 'package:event_and_activities_app/navbar_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:event_and_activities_app/screens/Eventcreater.dart'; // Import the CreateNewEventPage
 import 'package:event_and_activities_app/widget/big_event_card.dart';
 import 'package:event_and_activities_app/widget/categories_row.dart';
 import 'package:event_and_activities_app/widget/heart_card.dart';
 import 'package:event_and_activities_app/widget/join_card.dart';
-import 'package:event_and_activities_app/widget/profile_card.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import '../data.dart';
-import '../widget/event_bottom_sheet.dart';
-import '../widget/event_cards.dart';
-import '../widget/price_card.dart';
-import 'create_event_screen.dart';
-//import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
-//import '../navbar.dart'; // Assuming this is your custom NavBar widget
+import 'package:event_and_activities_app/widget/price_card.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -25,7 +17,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  PersistentTabController(initialIndex: 0);
 
   @override
   void initState() {
@@ -39,51 +31,18 @@ class _HomeState extends State<Home> {
         child: Column(
           children: [
             CategoriesRow(),
-            PriceCard(), // Add your event card here
+            PriceCard(),
             JoinCard(),
             HeartCard(),
             BigEventCard(),
           ],
         ),
       ),
-      const Center(
-          child: Text(
-        "I have no idea what goes here",
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-      )),
-      // Replace the direct modal call with a button that shows the modal
-      const CreateEventScreen(), // This is the screen that will automatically show the modal
-
-      ListView.builder(
-        itemCount: events.length,
-        itemBuilder: (context, index) {
-          final event = events[index];
-          return EventCard(
-            title: event["name"]!,
-            count: event["count"]!,
-            color: Color(int.parse(event["color"]!)),
-          );
-        },
-      ),
-      ProfileCard()
+      const CreateNewEventPage(), // Navigate to CreateNewEventPage
+      Container(),
+      Container(),
+      Container()
     ];
-  }
-
-  // Function to show the bottom sheet
-  void _showCreateEventModal(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true, // Allows for full-screen modal
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context)
-                  .viewInsets
-                  .bottom), // Ensures the modal shifts when keyboard pops up
-          child: const CreateEventForm(),
-        );
-      },
-    );
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -101,11 +60,8 @@ class _HomeState extends State<Home> {
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(
-          Icons.add_box_rounded,
-          color: Colors.white,
-        ),
-        title: (" "),
+        icon: const Icon(Icons.add_box_rounded),
+        title: ("Search"),
         activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
       ),
@@ -122,6 +78,17 @@ class _HomeState extends State<Home> {
         inactiveColorPrimary: Colors.grey,
       ),
     ];
+  }
+
+  void _onItemSelected(int index) {
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CreateNewEventPage()),
+      );
+    } else {
+      _controller.index = index;
+    }
   }
 
   @override
@@ -171,16 +138,15 @@ class _HomeState extends State<Home> {
         controller: _controller,
         screens: _buildScreens(),
         items: _navBarsItems(),
-        padding: EdgeInsets.only(top: 10),
-        //confineInSafeArea: true,
+        onItemSelected: _onItemSelected, // Handle item selection
+        padding: const EdgeInsets.only(top: 10),
         backgroundColor: Colors.white, // Default is Colors.white.
         handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset:
-            true, // This prevents the bottom nav bar from resizing when the keyboard is open.
+        resizeToAvoidBottomInset: true, // This prevents the bottom nav bar from resizing when the keyboard is open.
         stateManagement: true, // Default is true.
-        navBarStyle: NavBarStyle
-            .style15, // Choose the nav bar style with different properties.
+        navBarStyle: NavBarStyle.style15, // Choose the nav bar style with different properties.
       ),
     );
   }
 }
+
