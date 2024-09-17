@@ -77,12 +77,11 @@ class _LoginPageState extends State<LoginPage> {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
-
         return;
       }
 
       final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       final String? idToken = googleAuth.idToken;
 
@@ -96,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
 
         var data = jsonDecode(response.body);
 
-        if (response.statusCode == 201 ) {
+        if (response.statusCode == 201) {
           String token = data['token'];
 
           // Store the token in SharedPreferences
@@ -151,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'E-mail:',
                       style:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -178,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Password:',
                       style:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -253,8 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignupPage()),
+                        MaterialPageRoute(builder: (context) => SignupPage()),
                       );
                     },
                     child: const Text(
@@ -281,4 +279,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

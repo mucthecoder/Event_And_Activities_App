@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   PersistentTabController _controller =
-  PersistentTabController(initialIndex: 0);
+      PersistentTabController(initialIndex: 0);
 
   @override
   void initState() {
@@ -142,11 +142,12 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.only(top: 10),
         backgroundColor: Colors.white, // Default is Colors.white.
         handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset: true, // This prevents the bottom nav bar from resizing when the keyboard is open.
+        resizeToAvoidBottomInset:
+            true, // This prevents the bottom nav bar from resizing when the keyboard is open.
         stateManagement: true, // Default is true.
-        navBarStyle: NavBarStyle.style15, // Choose the nav bar style with different properties.
+        navBarStyle: NavBarStyle
+            .style15, // Choose the nav bar style with different properties.
       ),
     );
   }
 }
-
