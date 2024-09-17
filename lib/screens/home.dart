@@ -1,7 +1,13 @@
 //import 'package:event_and_activities_app/navbar_model.dart';
+import 'package:event_and_activities_app/widget/big_event_card.dart';
+import 'package:event_and_activities_app/widget/categories_row.dart';
+import 'package:event_and_activities_app/widget/heart_card.dart';
+import 'package:event_and_activities_app/widget/join_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
+import '../widget/price_card.dart';
 //import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 //import '../navbar.dart'; // Assuming this is your custom NavBar widget
@@ -24,7 +30,23 @@ class _HomeState extends State<Home> {
   }
 
   List<Widget> _buildScreens() {
-    return [Container(), Container(), Container(), Container(), Container()];
+    return [
+      const SingleChildScrollView(
+        child: Column(
+          children: [
+            CategoriesRow(),
+            PriceCard(), // Add your event card here
+            JoinCard(),
+            HeartCard(),
+            BigEventCard(),
+          ],
+        ),
+      ),
+      Container(),
+      Container(),
+      Container(),
+      Container()
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {

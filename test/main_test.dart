@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:event_and_activities_app/main.dart'; // Your main file
 import 'package:event_and_activities_app/screens/welcome.dart'; // Your WelcomeScreen file
