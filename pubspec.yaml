@@ -32,6 +32,10 @@ dependencies:
     sdk: flutter
   http: ^1.2.2
   image_picker: ^1.1.2
+  uuid: ^3.0.6
+  dio: ^4.0.6
+  intl: ^0.17.0
+  google_sign_in: ^5.4.0
 
 
 
@@ -103,3 +107,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
