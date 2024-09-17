@@ -102,27 +102,27 @@ class BigEventCard extends StatelessWidget {
                       Stack(
                         children: [
                           const CircleAvatar(
-                            backgroundImage: AssetImage('assets/avatar1.jpg'),
+                            backgroundImage: AssetImage('assets/group.jpeg'),
                             radius: 15,
                           ),
                           const Positioned(
                             left: 20,
                             child: CircleAvatar(
-                              backgroundImage: AssetImage('assets/avatar2.jpg'),
+                              backgroundImage: AssetImage('assets/group.jpeg'),
                               radius: 15,
                             ),
                           ),
                           const Positioned(
                             left: 40,
                             child: CircleAvatar(
-                              backgroundImage: AssetImage('assets/avatar3.jpg'),
+                              backgroundImage: AssetImage('assets/group.jpeg'),
                               radius: 15,
                             ),
                           ),
                           const Positioned(
                             left: 60,
                             child: CircleAvatar(
-                              backgroundImage: AssetImage('assets/avatar4.jpg'),
+                              backgroundImage: AssetImage('assets/group.jpeg'),
                               radius: 15,
                             ),
                           ),
