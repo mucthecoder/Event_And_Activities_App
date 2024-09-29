@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:event_and_activities_app/screens/Eventcreater.dart'; // Import the CreateNewEventPage
+import 'package:event_and_activities_app/screens/Eventcreater.dart';
+import 'package:event_and_activities_app/screens/categories_page.dart';
+import 'package:event_and_activities_app/screens/profile_page.dart';
 import 'package:event_and_activities_app/widget/big_event_card.dart';
 import 'package:event_and_activities_app/widget/categories_row.dart';
 import 'package:event_and_activities_app/widget/heart_card.dart';
@@ -16,32 +18,50 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  // Sample data of events for demonstration purposes
+  final List<Map<String, String>> _allEvents = [
+    {'title': 'CSAM GameBlast', 'category': 'Games'},
+    {'title': 'Tech Conference', 'category': 'Technology'},
+    {'title': 'Art Expo', 'category': 'Art'},
+    {'title': 'Music Festival', 'category': 'Music'},
+  ];
+
+  List<Map<String, String>> _filteredEvents = [];
 
   @override
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
+    // Initialize with all events initially displayed
+    _filteredEvents = _allEvents;
   }
 
   List<Widget> _buildScreens() {
     return [
-      const SingleChildScrollView(
+      SingleChildScrollView(
         child: Column(
           children: [
             CategoriesRow(),
             PriceCard(),
             JoinCard(),
             HeartCard(),
-            BigEventCard(),
+            // If there is a search query, display filtered results
+            if (_searchQuery.isNotEmpty)
+              ..._filteredEvents.map((event) => BigEventCard(eventTitle: event['title']!, eventCategory: event['category']!)).toList()
+            else
+            // Otherwise display default cards
+              BigEventCard(eventTitle: 'CSAM GameBlast', eventCategory: 'Games'),
           ],
         ),
       ),
-      const CreateNewEventPage(), // Navigate to CreateNewEventPage
-      Container(),
-      Container(),
-      Container()
+      const CreateNewEventPage(),
+      Container(), // Placeholder for Search page
+      const CategoriesPage(),
+      const ProfilePage(),
     ];
   }
 
@@ -66,7 +86,7 @@ class _HomeState extends State<Home> {
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.location_on),
+        icon: const Icon(Icons.category),
         title: ("Categories"),
         activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
@@ -86,9 +106,33 @@ class _HomeState extends State<Home> {
         context,
         MaterialPageRoute(builder: (context) => const CreateNewEventPage()),
       );
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CategoriesPage()),
+      );
     } else {
-      _controller.index = index;
+      setState(() {
+        _controller.index = index;
+      });
     }
+  }
+
+  void _performSearch() {
+    setState(() {
+      _searchQuery = _searchController.text.trim();
+
+      if (_searchQuery.isNotEmpty) {
+        // Filter the events based on the search query
+        _filteredEvents = _allEvents.where((event) {
+          return event['title']!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              event['category']!.toLowerCase().contains(_searchQuery.toLowerCase());
+        }).toList();
+      } else {
+        // If search query is empty, show all events
+        _filteredEvents = _allEvents;
+      }
+    });
   }
 
   @override
@@ -104,27 +148,31 @@ class _HomeState extends State<Home> {
           children: [
             Expanded(
               child: Container(
-                height: 60, // Adjust the height as needed
+                height: 60,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
                   color: const Color(0xe9e9e9ff),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: _searchController,
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search',
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                      size: 40,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.grey,
+                        size: 40,
+                      ),
+                      onPressed: _performSearch,
                     ),
                   ],
                 ),
@@ -138,15 +186,153 @@ class _HomeState extends State<Home> {
         controller: _controller,
         screens: _buildScreens(),
         items: _navBarsItems(),
-        onItemSelected: _onItemSelected, // Handle item selection
+        onItemSelected: _onItemSelected,
         padding: const EdgeInsets.only(top: 10),
-        backgroundColor: Colors.white, // Default is Colors.white.
-        handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset:
-            true, // This prevents the bottom nav bar from resizing when the keyboard is open.
-        stateManagement: true, // Default is true.
-        navBarStyle: NavBarStyle
-            .style15, // Choose the nav bar style with different properties.
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        navBarStyle: NavBarStyle.style15,
+      ),
+    );
+  }
+}
+
+class BigEventCard extends StatelessWidget {
+  final String eventTitle;
+  final String eventCategory;
+
+  const BigEventCard({
+    Key? key,
+    required this.eventTitle,
+    required this.eventCategory,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  child: Image.asset(
+                    'assets/group.jpeg', // Replace with event image asset
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Container(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      eventCategory,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.favorite_border,
+                      color: Colors.redAccent,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    eventTitle,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'THU 26 May, 09:00 - FRI 27 May, 10:00',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'R30',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green[600],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[600],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          'Join Event',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
