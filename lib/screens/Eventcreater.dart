@@ -58,7 +58,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
 
 
       var uri =
-      Uri.parse('http://192.168.90.185:3000/api/events/new-no-image');
+      Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/new-no-image');
       var request = http.MultipartRequest('POST', uri);
       request.headers['Authorization'] = 'Bearer $token'; // Set the token
 
@@ -119,7 +119,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       };
       print(loginBody);
       var response = await http.post(
-        Uri.parse('http://192.168.90.185:3000/api/events/new-no-image'),
+        Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/new-no-image'),
         body: jsonEncode(loginBody),
         headers: {'Content-Type': 'application/json','Authorization':'Bearer $token'},
       );
@@ -161,7 +161,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     var response1 = await http.get(
-      Uri.parse('http://192.168.90.185:3000/api/category'),
+      Uri.parse('https://eventsapi3a.azurewebsites.net/api/category'),
       headers: {'Authorization':'Bearer $token'},
     );
 
