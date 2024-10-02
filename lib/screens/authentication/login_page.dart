@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CreateEventPage()),
+        MaterialPageRoute(builder: (context) => Home()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
