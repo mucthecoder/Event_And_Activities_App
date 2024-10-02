@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'package:event_and_activities_app/screens/Eventcreater.dart';
+
+
 import 'package:event_and_activities_app/screens/authentication/forgot_password.dart';
 import 'package:event_and_activities_app/screens/eventlisting.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'signup_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => EventListingPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

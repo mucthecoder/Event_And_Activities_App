@@ -1,8 +1,9 @@
-import 'package:event_and_activities_app/screens/Ticketreg.dart';
+
 import 'package:flutter/material.dart';
 
 
 import 'Event.dart';
+import 'authentication/login_page.dart';
 // Add google_maps_flutter if you want to display a map
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -101,7 +102,7 @@ class EventDetailPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TicketScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: Text('Get Ticket'),
                   style: ElevatedButton.styleFrom(
