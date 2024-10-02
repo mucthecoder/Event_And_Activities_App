@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'package:event_and_activities_app/screens/Eventcreater.dart';
 import 'package:event_and_activities_app/screens/authentication/forgot_password.dart';
-import 'package:event_and_activities_app/screens/home.dart';
+import 'package:event_and_activities_app/screens/eventlisting.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 201 && data['token'] != null) {
       String token = data['token'];
+      print(token);
 
       // Store the token in SharedPreferences
       await prefs.setString('token', token);
@@ -62,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(builder: (context) => CreateEventPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -108,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
           // Navigate to the next page
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => EventListingPage()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -119,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
     } catch (error) {
       print('Google Sign-In failed: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google Sign-In failed')),
+        const SnackBar(content: Text('Google Sign-In failed')),
       );
     }
   }

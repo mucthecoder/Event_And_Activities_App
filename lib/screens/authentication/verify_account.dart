@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 import 'set_password.dart';
 
 class VerifyTokenScreen extends StatefulWidget {
   final String email;
 
-  VerifyTokenScreen({required this.email});
+  const VerifyTokenScreen({super.key, required this.email});
 
   @override
   _VerifyTokenScreenState createState() => _VerifyTokenScreenState();
@@ -36,12 +37,13 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
         }),
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final userId = data['userId'];
+
+
+
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -50,7 +52,7 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid or expired token')),
+          const SnackBar(content: Text('Invalid or expired token')),
         );
       }
     } catch (e) {
@@ -60,22 +62,10 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
     }
   }
 
-
-
-  void _moveFocus(BuildContext context, FocusNode currentNode, FocusNode nextNode) {
-    currentNode.unfocus();
-    FocusScope.of(context).requestFocus(nextNode);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final FocusNode _focusNode1 = FocusNode();
-    final FocusNode _focusNode2 = FocusNode();
-    final FocusNode _focusNode3 = FocusNode();
-    final FocusNode _focusNode4 = FocusNode();
-
     return Scaffold(
-      appBar: AppBar(title: Text('Verify Token')),
+      appBar: AppBar(title: const Text('Verify Token')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -85,10 +75,10 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildTokenBox(_token1Controller, _focusNode1, context, _focusNode2),
-                  _buildTokenBox(_token2Controller, _focusNode2, context, _focusNode3),
-                  _buildTokenBox(_token3Controller, _focusNode3, context, _focusNode4),
-                  _buildTokenBox(_token4Controller, _focusNode4, context, null),
+                  _buildTokenBox(_token1Controller),
+                  _buildTokenBox(_token2Controller),
+                  _buildTokenBox(_token3Controller),
+                  _buildTokenBox(_token4Controller),
                 ],
               ),
               const SizedBox(height: 20),
@@ -98,14 +88,7 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
                     verifyToken(context);
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                child: Text('Verify Token'),
+                child: const Text('Verify Token'),
               ),
             ],
           ),
@@ -114,26 +97,19 @@ class _VerifyTokenScreenState extends State<VerifyTokenScreen> {
     );
   }
 
-  Widget _buildTokenBox(TextEditingController controller, FocusNode currentNode, BuildContext context, FocusNode? nextNode) {
+  Widget _buildTokenBox(TextEditingController controller) {
     return SizedBox(
       width: 50,
       child: TextFormField(
         controller: controller,
-        focusNode: currentNode,
         maxLength: 1,
         textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          counterText: "", // Hide the character counter
+          counterText: "", // Hide character counter
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        onChanged: (value) {
-          if (value.length == 1 && nextNode != null) {
-            _moveFocus(context, currentNode, nextNode);
-          }
-        },
         validator: (value) {
           if (value == null || value.isEmpty) {
             return '';
