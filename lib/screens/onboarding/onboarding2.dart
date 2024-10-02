@@ -1,7 +1,9 @@
-import 'package:event_and_activities_app/screens/onboarding/onboarding3.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../authentication/login_page.dart';
 
 class SecondOnboarding extends StatefulWidget {
   const SecondOnboarding({super.key});
@@ -88,7 +90,7 @@ class _SecondOnboarding extends State<SecondOnboarding>
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const LastOnboarding()),
+                        builder: (context) => LoginPage()),
                   );
                 },
                 child: SvgPicture.asset(
