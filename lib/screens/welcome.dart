@@ -1,7 +1,7 @@
 import 'package:event_and_activities_app/screens/onboarding/onboarding1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:event_and_activities_app/screens/authentication/login_page.dart';
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -19,7 +19,7 @@ class _WelcomeScreen extends State<WelcomeScreen>
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const FirstOnboarding()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     });
   }

@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
     };
 
     var response = await http.post(
-      Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/login'),
+      Uri.parse('http://192.168.90.185:3000/api/auth/login'),
       body: jsonEncode(loginBody),
       headers: {'Content-Type': 'application/json'},
     );
