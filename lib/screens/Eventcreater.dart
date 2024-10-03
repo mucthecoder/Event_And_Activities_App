@@ -19,7 +19,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
   final ImagePicker _picker = ImagePicker();
   List<XFile>? _images = [];
   bool isLoading = false; // For loading indicator
-
+  bool isAvailable=false;
   String title = '';
   String description = '';
   String location = '';
@@ -56,53 +56,6 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         isLoading = true; // Show loading indicator
       });
 
-
-      var uri =
-      Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/new-no-image');
-      var request = http.MultipartRequest('POST', uri);
-      request.headers['Authorization'] = 'Bearer $token'; // Set the token
-
-      // Add form fields
-      request.fields['title'] = title;
-      request.fields['description'] = description;
-      request.fields['location'] = location;
-      request.fields['date'] = date;
-      request.fields['startTime'] = startTime;
-      request.fields['endTime'] = endTime;
-      request.fields['isPaid'] = isPaid.toString();
-
-      if (isPaid && ticketPrice.isNotEmpty) {
-        request.fields['ticketPrice'] = ticketPrice;
-      }
-
-      if (maxAttendees.isNotEmpty) {
-        request.fields['maxAttendees'] = maxAttendees;
-      }
-
-      request.fields['food_stalls'] = foodStalls.toString();
-      request.fields["category"]=category2.toString();
-
-      // Handle images
-      if (_images != null && _images!.isNotEmpty) {
-        for (var image in _images!) {
-          if (kIsWeb) {
-            // Web: Read image as bytes
-            Uint8List bytes = await image.readAsBytes();
-            request.files.add(http.MultipartFile.fromBytes(
-              'images',
-              bytes,
-              filename: image.name,
-            ));
-          } else {
-            // Mobile: Use image path
-            // Uint8List bytes = await image.readAsBytes();
-            // request.files.add(await http.MultipartFile.fromPath('image', image!.path),
-            // );
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Event created successfully!')));
-          }
-        }
-      }
       //===========================================
       var loginBody = {
         "title": title,
@@ -118,13 +71,53 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         "food_stalls":foodStalls.toString()
       };
       print(loginBody);
+      int res=await checkAvailability(location, date, startTime, endTime);
+      //return value of 1 means unavailable
+      //return value of 2 means booked
+      //return value of 0 means available
+      //return value of -1 means error
+      print("Checking availability");
+      if (res==-1){
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error checking availability')));
+        return;
+      }
+      else if(res==1){
+        setState(() {
+          isLoading = false;
+        });
+        //unavailable
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to create event, Venue Unavailable')));
+
+        return;
+      }
+      else if (res==2){
+        setState(() {
+          isLoading = false;
+        });
+        //booked
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Venue Reserved at this time,Check schedule')));
+        return;
+      }
+      else if (res==0){
+        //available
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Venue available, Creating event')));
+      }
+      print("Venue available");
       var response = await http.post(
         Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/new-no-image'),
         body: jsonEncode(loginBody),
         headers: {'Content-Type': 'application/json','Authorization':'Bearer $token'},
       );
       //===========================================
-      // var response = await request.send();
+
+      //var response = await request.send();
 
       setState(() {
         isLoading = false; // Hide loading indicator
@@ -136,6 +129,55 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
             SnackBar(content: Text('Event created successfully!')));
         var data = jsonDecode(response.body);
         print(data);
+        var him=data["id"];
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // if (_images != null && _images!.isNotEmpty) {
+        //   var uri = Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/add-image/$him');
+        //   var request = http.MultipartRequest('POST', uri);
+        //   request.headers['Authorization'] = 'Bearer $token'; // Set the token
+        //
+        //   try {
+        //     var firstImage = _images?[0]; // Get the first image
+        //     Uint8List bytes = await firstImage!.readAsBytes(); // Read the image as bytes
+        //
+        //     if (kIsWeb) {
+        //       // Web: Read image as bytes and add to request
+        //       request.files.add(http.MultipartFile.fromBytes(
+        //         'image',
+        //         bytes,
+        //         filename: firstImage.path.split('/').last, // Extract filename from path
+        //       ));
+        //     } else {
+        //       // Mobile: Use image path
+        //       request.files.add(await http.MultipartFile.fromPath('image', firstImage.path));
+        //     }
+        //
+        //     var response = await request.send();
+        //
+        //     if (response.statusCode == 200) {
+        //       // If the server returns a 200 OK response
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         SnackBar(content: Text('Image uploaded successfully!')),
+        //       );
+        //     } else {
+        //       // Handle server response errors
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         SnackBar(content: Text('Failed to upload image. Status: ${response.statusCode}')),
+        //       );
+        //     }
+        //   } catch (e) {
+        //     // Handle any errors during image reading or the HTTP request
+        //     ScaffoldMessenger.of(context).showSnackBar(
+        //       SnackBar(content: Text('Error during upload: $e')),
+        //     );
+        //   }
+        // } else {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(content: Text('No images selected!')),
+        //   );
+        // }
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 
       } else {
@@ -156,6 +198,8 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       });
     }
   }
+
+
 
   Future<void> getCategories() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -190,7 +234,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       if (response1.statusCode != 200) {
         throw Exception("Failed to fetch venue data.");
       }
-
+      //works
       var data1 = jsonDecode(response1.body);
       Map<String, dynamic> temp = {};
       for (int i = 0; i < data1.length; i++) {
@@ -210,10 +254,10 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         throw Exception("Failed to fetch 2A schedule data.");
       }
       var data2 = jsonDecode(response2.body);
+      //to be determined
       //has fields schedule_id venue_id date start_time end_time event_time
       for (int i = 0; i < data2.length; i++) {
         String venueName = temp[data2[i]['VENUE_ID'].toString()] ?? '';
-
         if (target == venueName && date == data2[i]['DATE'].toString()) {
           String bookedStart = data2[i]['START_TIME'].toString();
           String bookedEnd = data2[i]['END_TIME'].toString();
@@ -234,13 +278,14 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       if (response3.statusCode != 200) {
         throw Exception("Failed to fetch our schedule data.");
       }
+      //works
       var data3 = jsonDecode(response3.body);
       data3 = data3["data"];
       for (int i = 0; i < data3.length; i++) {
-        if (target == data3[i]['VENUE_NAME'].toString() &&
-            date == data3[i]['DATE'].toString()) {
-          String eventStart = data3[i]['START_TIME'].toString();
-          String eventEnd = data3[i]['END_TIME'].toString();
+        if (target == data3[i]['location'].toString() &&
+            date == data3[i]['date'].toString()) {
+          String eventStart = data3[i]['startTime'].toString();
+          String eventEnd = data3[i]['endTime'].toString();
           if ((start.compareTo(eventStart) >= 0 &&
                   start.compareTo(eventEnd) < 0) ||
               (end.compareTo(eventStart) > 0 && end.compareTo(eventEnd) <= 0) ||

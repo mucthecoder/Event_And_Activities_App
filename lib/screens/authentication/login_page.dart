@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home.dart';
 import 'signup_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => EventListingPage()),
+        MaterialPageRoute(builder: (context) => Home()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
       if (idToken != null) {
         // Send the ID token to your backend
         var response = await http.post(
-          Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/login'),
+          Uri.parse('https://192.168.90.185:3000/api/auth/login'),
           body: jsonEncode({"googleIdToken": idToken}),
           headers: {'Content-Type': 'application/json'},
         );
