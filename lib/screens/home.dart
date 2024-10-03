@@ -1,10 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:event_and_activities_app/screens/Eventcreater.dart';
 import 'package:event_and_activities_app/screens/categories_page.dart';
 import 'package:event_and_activities_app/screens/profile_page.dart';
-import 'package:event_and_activities_app/widget/big_event_card.dart';
+
 import 'package:event_and_activities_app/widget/categories_row.dart';
 import 'package:event_and_activities_app/widget/heart_card.dart';
 import 'package:event_and_activities_app/widget/join_card.dart';
@@ -104,7 +105,7 @@ class _HomeState extends State<Home> {
     if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const CreateNewEventPage()),
+        MaterialPageRoute(builder: (context) => CreateNewEventPage()),
       );
     } else if (index == 3) {
       Navigator.push(
