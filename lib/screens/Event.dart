@@ -3,7 +3,7 @@ class Event {
   final String title;
   final String eventAuthor;
   final String email;
-  final String event_id;
+  final dynamic event_id;
   final String startTime;
   final String endTime;
   final String date;
@@ -43,8 +43,9 @@ class Event {
       description: json['description'],
       categories: categories,
       ticket_price: json['ticketPrice'].toString(),
+
       email: json['email'],
-      event_id: json['id'].toString(),
+      event_id: json['event_id'],
       isPaid: json['isPaid'] ?? false,
     );
   }

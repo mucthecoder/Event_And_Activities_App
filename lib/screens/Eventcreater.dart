@@ -1,5 +1,6 @@
-import 'dart:io' as io;
+
 import 'dart:typed_data';
+import 'package:event_and_activities_app/screens/eventlisting.dart';
 import 'package:flutter/foundation.dart'; // for kIsWeb
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -53,8 +54,8 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       setState(() {
         isLoading = true; // Show loading indicator
       });
-
-      //===========================================
+      
+//================================
       var loginBody = {
         "title": title,
         "description": description,
@@ -177,6 +178,11 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         // }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => EventListingPage()),
+        );
 
 
       } else {
