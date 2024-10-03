@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
       if (idToken != null) {
         // Send the ID token to your backend
         var response = await http.post(
-          Uri.parse('https://eventsapi3a.azurewebsites.net/api/auth/login'),
+          Uri.parse('https://192.168.90.185:3000/api/auth/login'),
           body: jsonEncode({"googleIdToken": idToken}),
           headers: {'Content-Type': 'application/json'},
         );
