@@ -27,7 +27,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
 
   late SharedPreferences prefs;
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email'],
+    clientId: '114577572846140199739.apps.googleusercontent.com',
+  );
 
   @override
   void initState() {

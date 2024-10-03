@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Event.dart';
 import 'dart:convert';
 
+
+
 class EventService {
   Future<List<Event>> fetchEvents() async {
     final response = await http.get(Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/'));
@@ -22,12 +24,18 @@ class EventService {
   }
 
   Future<List<Event>> searchEvents(String query) async {
+    if (query.isEmpty) {
+      // Call your get all events function here if the query is empty
+      return fetchEvents();
+    }
+
+    print(query); // Debugging print statement to see the query
     final response = await http.get(Uri.parse(
-        'https://eventsapi3a.azurewebsites.net/api/events/search?query=$query'));
+        'https://eventsapi3a.azurewebsites.net/api/events/search?query=${Uri.encodeComponent(query)}'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      if (data['success'] && data['data'] != null) {
+      if (data['data'] != null) {
         return (data['data'] as List)
             .map((eventJson) => Event.fromJson(eventJson))
             .toList();
@@ -39,13 +47,14 @@ class EventService {
     }
   }
 
+
   Future<List<Event>> fetchEventsByCategory(String category) async {
     final response = await http.get(Uri.parse(
         'https://eventsapi3a.azurewebsites.net/api/events?category=$category'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      if (data['success'] && data['data'] != null) {
+      if (data['data'] != null) {
         return (data['data'] as List)
             .map((eventJson) => Event.fromJson(eventJson))
             .toList();
@@ -294,11 +303,27 @@ class EventCard extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   if (event.isPaid) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Redirecting to purchase tickets...'),
-                    ));
-                  } else {
-                    await getTicket(eventId: event.event_id, context: context);
+    String? name = await _showInputDialog(context, 'Enter your name');
+    String? email = await _showInputDialog(context, 'Enter your email');
+
+    if (name != null && email != null) {
+      print("Event ID: ${event.event_id}");
+      print("Event Date: ${event.date}");
+
+      // Call the buyTicket function
+    await buyTicket(
+    eventId: event.event_id.toString(),
+    ticketType: 'Paid', // Adjust as needed based on your logic
+    price: double.parse(event.ticket_price),
+    eventDate: event.date,
+    name: name,
+    email: email,
+    context: context,
+    );
+                  } }
+
+                  else {
+                   // await getTicket(eventId: event.event_id, context: context);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Your free ticket is available!'),
                     ));
@@ -319,9 +344,16 @@ class EventCard extends StatelessWidget {
 }
 
 
-// Function to fetch ticket
-Future<void> getTicket({required String eventId, required BuildContext context}) async {
-  print("getTicket called with eventId: $eventId"); // Debug print
+Future<void> buyTicket({
+  required String eventId,
+  required String ticketType,
+  required double price,
+  required String eventDate,
+  required String name,
+  required String email,
+  required BuildContext context,
+}) async {
+  print("buyTicket called with eventId: $eventId"); // Debug print
   try {
     // Retrieve the token from SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -336,30 +368,54 @@ Future<void> getTicket({required String eventId, required BuildContext context})
       return; // Exit the function early if there's no token
     }
 
-    // Make the HTTP GET request
-    final response = await http.get(
-      Uri.parse('https://eventsapi3a.azurewebsites.net/api/ticket/$eventId'),
+    // Prepare the request body
+    final Map<String, dynamic> requestBody = {
+      'eventId': eventId,
+      'ticketType': ticketType,
+      'price': price,
+      'eventDate': eventDate,
+      'attendeeInfo': {
+        'name': name,
+        'email': email,
+      },
+    };
+
+    // Make the HTTP POST request
+    final response = await http.post(
+      Uri.parse('https://eventsapi3a.azurewebsites.net/api/ticket/buy'),
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
+      body: json.encode(requestBody),
     );
 
     if (response.statusCode == 200) {
-      final ticketData = json.decode(response.body);
-      print("Ticket data: $ticketData"); // Debug print
+      final responseData = json.decode(response.body);
+      print("Response data: $responseData"); // Debug print
 
-      // Optional: Validate ticketData structure
-      if (ticketData['success']) {
-        // Process ticket data here
+      // Check if the response indicates success
+      if (responseData['success']) {
+        if (ticketType == 'RSVP') {
+          // Handle RSVP success
+          final ticketId = responseData['ticket']['_id'];
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('RSVP successful! Ticket ID: $ticketId')),
+          );
+        } else {
+          // Handle normal ticket purchase success
+          final ticketId = responseData['ticketId'];
+       //   final clientSecret = responseData['clientSecret'];
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Ticket purchased successfully! Ticket ID: $ticketId')),
+          );
+          // Optionally handle payment using clientSecret if required
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${ticketData['message']}')),
+          SnackBar(content: Text('Error: ${responseData['message']}')),
         );
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ticket retrieved successfully!')),
-      );
     } else if (response.statusCode == 401) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Unauthorized: Please log in again.')),
@@ -373,7 +429,34 @@ Future<void> getTicket({required String eventId, required BuildContext context})
   } catch (error) {
     print('Exception occurred: $error');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to fetch ticket: $error')),
+      SnackBar(content: Text('Failed to buy ticket: $error')),
     );
   }
 }
+
+
+  Future<String?> _showInputDialog(BuildContext context, String title) {
+    String? inputValue;
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: TextField(
+            onChanged: (value) {
+              inputValue = value;
+            },
+            decoration: InputDecoration(hintText: "Enter $title"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(inputValue);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
