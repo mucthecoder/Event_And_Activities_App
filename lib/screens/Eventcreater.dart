@@ -130,7 +130,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         var data = jsonDecode(response.body);
         //print(data);
         var him=data["id"];
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++images+++++++++++++++++++++++++++++++++++++++
         // if (_images != null && _images!.isNotEmpty) {
         //   var uri = Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/add-image/$him');
         //   var request = http.MultipartRequest('POST', uri);
@@ -177,13 +177,11 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         //   );
         // }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+        
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => EventListingPage()),
         );
-
 
       } else {
         // Error: read the response body for more details
