@@ -1,5 +1,6 @@
-import 'dart:io' as io;
+
 import 'dart:typed_data';
+import 'package:event_and_activities_app/screens/eventlisting.dart';
 import 'package:flutter/foundation.dart'; // for kIsWeb
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -94,6 +95,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
               filename: image.name,
             ));
           } else {
+
             // Mobile: Use image path
             // Uint8List bytes = await image.readAsBytes();
             // request.files.add(await http.MultipartFile.fromPath('image', image!.path),
@@ -136,6 +138,11 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
             SnackBar(content: Text('Event created successfully!')));
         var data = jsonDecode(response.body);
         print(data);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => EventListingPage()),
+        );
 
 
       } else {

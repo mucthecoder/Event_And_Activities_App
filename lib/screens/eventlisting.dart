@@ -115,7 +115,7 @@ class _EventListingPageState extends State<EventListingPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CircleAvatar(
-            //  backgroundImage: AssetImage('assets/wits.png'), // Replace with your image
+              //  backgroundImage: AssetImage('assets/wits.png'), // Replace with your image
             ),
           ),
         ],
@@ -134,6 +134,7 @@ class _EventListingPageState extends State<EventListingPage> {
                 CategoryButton(categoryName: 'Health', onCategorySelect: onCategorySelect),
                 CategoryButton(categoryName: 'Art', onCategorySelect: onCategorySelect),
                 CategoryButton(categoryName: 'Music', onCategorySelect: onCategorySelect),
+                CategoryButton(categoryName: 'Free', onCategorySelect: onCategorySelect),
               ],
             ),
           ),
@@ -220,7 +221,6 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Handle the event when the card is tapped
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -230,108 +230,83 @@ class EventCard extends StatelessWidget {
       },
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0), // Reduced padding
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Event Title
               Text(
                 event.title,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), // Reduced font size
               ),
-              SizedBox(height: 4),
+              SizedBox(height: 2), // Reduced height
 
-              // Event Author
               Text(
                 'Author: ${event.eventAuthor}',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 10, color: Colors.grey), // Reduced font size
               ),
+              SizedBox(height: 2), // Reduced height
 
-              SizedBox(height: 4),
-
-              // Event Description
               Text(
                 '${event.description}',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 10, color: Colors.grey), // Reduced font size
               ),
+              SizedBox(height: 2), // Reduced height
 
-              SizedBox(height: 4),
-
-              // Event Location
               Text(
                 '${event.location}',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 10, color: Colors.grey), // Reduced font size
               ),
+              SizedBox(height: 2), // Reduced height
 
-              SizedBox(height: 4),
-
-              // Event Start-End Time
               Text(
                 'Time: ${event.startTime} - ${event.endTime}',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 10, color: Colors.grey), // Reduced font size
               ),
-
-              // Event Date
               Text(
                 'Date: ${event.date}',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 10, color: Colors.grey), // Reduced font size
               ),
-
-              // Event Categories
               Text(
                 'Categories: ${event.categories.join(", ")}',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 10, color: Colors.grey), // Reduced font size
               ),
+              SizedBox(height: 4), // You can adjust this as needed
 
-              SizedBox(height: 8),
-
-              // Event Paid/Free Indicator
               Text(
                 event.isPaid ? 'Paid Event' : 'Free Event',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 10,
                   color: event.isPaid ? Colors.red : Colors.green,
                 ),
               ),
 
-
-              SizedBox(height: 8,),
+              SizedBox(height: 4), // Adjusted as needed
 
               Text(
                 'Ticket Price: ${event.ticket_price}',
                 style: TextStyle(
-                  fontSize: 12,
-
+                  fontSize: 10,
                 ),
               ),
 
-              SizedBox(height: 8),
+              SizedBox(height: 4), // Adjusted as needed
 
-              // Buy Ticket or Get Ticket Button
               ElevatedButton(
-                onPressed: ()  async{
-                  // Add action for buy or get ticket
+                onPressed: () async {
                   if (event.isPaid) {
-                    // Logic for buying a ticket
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Redirecting to purchase tickets...'),
                     ));
-                    // Navigate to the ticket purchase page (if any)
                   } else {
                     await getTicket(eventId: event.event_id, context: context);
-
-
-
-                    // Logic for getting a free ticket
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Your free ticket is available!'),
                     ));
-                    // Perform action for free ticket
                   }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: event.isPaid ? Colors.red : Colors.green,
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjusted padding
                 ),
                 child: Text(event.isPaid ? 'Buy Ticket' : 'Get Ticket'),
               ),
@@ -402,4 +377,3 @@ Future<void> getTicket({required String eventId, required BuildContext context})
     );
   }
 }
-
