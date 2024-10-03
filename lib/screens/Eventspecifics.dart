@@ -1,16 +1,41 @@
-
 import 'package:flutter/material.dart';
-
-
+import 'package:http/http.dart' as http; // Import http package for making requests
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Event.dart';
 import 'authentication/login_page.dart';
-// Add google_maps_flutter if you want to display a map
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EventDetailPage extends StatelessWidget {
-  final Event event; // Assuming you have an Event model
+  final Event event;
 
   EventDetailPage({required this.event});
+
+  // Function to cancel the event
+  Future<void> cancelEvent(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    final eventId = event.event_id; // Replace with the actual property for event ID
+    final response = await http.patch(
+      Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/$eventId/cancel'),
+      headers: {
+        'Authorization': 'Bearer $token', // Replace with actual token if needed
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Handle successful cancellation
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Event cancelled successfully!')),
+      );
+      // Optionally, navigate back or refresh the event list
+      Navigator.pop(context);
+    } else {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to cancel event: ${response.body}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +64,6 @@ class EventDetailPage extends StatelessWidget {
               ),
               SizedBox(height: 16),
 
-              // Organizer Section
-
-              SizedBox(height: 16),
-
               // Categories Section
               Text(
                 'Categories',
@@ -69,19 +90,7 @@ class EventDetailPage extends StatelessWidget {
               Text(event.description),
               SizedBox(height: 16),
 
-              // Event Highlights (you can replace this with images, if required)
-              Text(
-                'Event Highlights',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Explore some memorable moments and glimpses of what\'s to come at this event. '
-                    'Take a look at our event highlights through these featured images.',
-              ),
-              SizedBox(height: 16),
-
-              // Location and Map Section
+              // Location Section
               Text(
                 'Location',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -91,11 +100,6 @@ class EventDetailPage extends StatelessWidget {
                 event.location,
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 16),
-
-              // Placeholder for a Map (Google Maps)
-
-
               SizedBox(height: 16),
 
               // Get Ticket Button
@@ -114,6 +118,22 @@ class EventDetailPage extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Cancel Event Button
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => cancelEvent(context),
+                  child: Text('Cancel Event'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red, // Change color to indicate cancellation
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    textStyle: TextStyle(fontSize: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -121,4 +141,3 @@ class EventDetailPage extends StatelessWidget {
     );
   }
 }
-
