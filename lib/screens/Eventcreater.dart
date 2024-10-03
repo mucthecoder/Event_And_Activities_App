@@ -47,8 +47,6 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       return;
     }
 
-
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -106,10 +104,11 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       }
       else if (res==0){
         //available
+        print("Event created successfully");
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Venue available, Creating event')));
       }
-      print("Venue available");
+      //print("Venue available");
       var response = await http.post(
         Uri.parse('https://eventsapi3a.azurewebsites.net/api/events/new-no-image'),
         body: jsonEncode(loginBody),
@@ -128,7 +127,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Event created successfully!')));
         var data = jsonDecode(response.body);
-        print(data);
+        //print(data);
         var him=data["id"];
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // if (_images != null && _images!.isNotEmpty) {
@@ -198,8 +197,6 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       });
     }
   }
-
-
 
   Future<void> getCategories() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
