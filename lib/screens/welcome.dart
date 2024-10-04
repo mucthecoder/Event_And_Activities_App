@@ -1,7 +1,8 @@
 import 'package:event_and_activities_app/screens/onboarding/onboarding1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:event_and_activities_app/screens/authentication/login_page.dart';
+import 'package:event_and_activities_app/screens/authentication/login_page.dart'; // If needed elsewhere
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -9,8 +10,7 @@ class WelcomeScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _WelcomeScreen();
 }
 
-class _WelcomeScreen extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
+class _WelcomeScreen extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -19,7 +19,7 @@ class _WelcomeScreen extends State<WelcomeScreen>
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        MaterialPageRoute(builder: (context) => const FirstOnboarding()), // Navigate to FirstOnboarding
       );
     });
   }
@@ -63,16 +63,13 @@ class _WelcomeScreen extends State<WelcomeScreen>
               left: 0,
               right: 0,
               top: 0,
-              //bottom: 0,
               child: Image.asset(
                 'assets/rect24.png',
                 fit: BoxFit.fitWidth,
               ),
             ),
             Positioned(
-              // Center the image horizontally
               left: (screenWidth - imageWidth) / 2,
-              // Place the image at the top third of the screen
               top: screenHeight / 5,
               width: imageWidth,
               child: ClipRRect(
@@ -87,7 +84,6 @@ class _WelcomeScreen extends State<WelcomeScreen>
               left: 0,
               top: screenHeight / 4,
               right: 0,
-              //bottom: 0,
               child: Image.asset(
                 'assets/secondBottomRect.png',
                 fit: BoxFit.fitWidth,
