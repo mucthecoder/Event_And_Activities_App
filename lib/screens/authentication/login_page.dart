@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:event_and_activities_app/screens/Eventcreater.dart';
 import 'package:event_and_activities_app/screens/authentication/forgot_password.dart';
 import 'package:event_and_activities_app/screens/eventlisting.dart';
+import 'package:event_and_activities_app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the next page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CreateNewEventPage()),
+        MaterialPageRoute(builder: (context) => Home()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
       if (idToken != null) {
         // Send the ID token to your backend
         var response = await http.post(
-          Uri.parse('https://192.168.90.185:3000/api/auth/login'),
+          Uri.parse('https://eventsapi3a.azurewebsites.net//api/auth/login'),
           body: jsonEncode({"googleIdToken": idToken}),
           headers: {'Content-Type': 'application/json'},
         );

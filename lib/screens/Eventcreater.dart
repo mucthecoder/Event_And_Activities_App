@@ -54,7 +54,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       setState(() {
         isLoading = true; // Show loading indicator
       });
-      
+
 //================================
       var loginBody = {
         "title": title,
@@ -177,7 +177,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
         //   );
         // }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => EventListingPage()),
@@ -192,7 +192,7 @@ class _CreateNewEventPageState extends State<CreateNewEventPage> {
       }
     }
   }
-  //189
+
   Future<void> _pickImages() async {
     final List<XFile>? selectedImages = await _picker.pickMultiImage();
     if (selectedImages != null && selectedImages.isNotEmpty) {

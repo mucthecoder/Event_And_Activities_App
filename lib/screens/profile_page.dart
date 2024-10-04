@@ -1,3 +1,5 @@
+import 'package:event_and_activities_app/screens/myEvents.dart';
+import 'package:event_and_activities_app/screens/myTickets.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -20,7 +22,7 @@ class ProfilePage extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('assets/profile_picture.jpg'), // Add a profile picture
+                backgroundImage: AssetImage('assets/profile.png'), // Add a profile picture
               ),
             ),
             const SizedBox(height: 20),
@@ -64,6 +66,30 @@ class ProfilePage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 // Navigate to Settings Page
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('My Events'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                // Navigate to Settings Page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyEvents()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('My Tickets'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                // Navigate to Settings Page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => myTickets()),
+                );
               },
             ),
             ListTile(
