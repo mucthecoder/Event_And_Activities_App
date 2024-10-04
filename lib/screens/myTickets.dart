@@ -15,7 +15,9 @@ class myTickets extends StatefulWidget {
 class _myTicketsState extends State<myTickets> {
   List<Ticket> _tickets = [];
   bool _isLoading = true;
-
+  bool loadBuses=false;
+  List<String> busses=[];
+  Map<String, List<String>> ticketBuses = {};
   @override
   void initState() {
     super.initState();
@@ -53,6 +55,37 @@ class _myTicketsState extends State<myTickets> {
         SnackBar(content: Text('Failed to fetch tickets.')),
       );
     }
+    fetchBusses();
+  }
+
+  Future<void> fetchBusses() async {
+
+    ticketBuses.clear();
+
+    for (var ticket in _tickets) {
+      String targetDate = ticket.eventDate.toString();
+
+      var response = await http.get(
+        Uri.parse('https://gateway.tandemworkflow.com/api/v1/bus-schedule/?date=$targetDate'),
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        // If no buses are available, add a message
+        List<String> busesForTicket = data.isEmpty
+            ? ["No buses at this time"]
+            : data.map<String>((bus) => bus['routeName'].toString()).toList();
+
+        // Store in the dictionary using ticket ID or eventId as the key
+        ticketBuses[ticket.eventId] = busesForTicket;
+      } else {
+        // If fetching failed, store the error message
+        ticketBuses[ticket.eventId] = ["Failed to fetch buses"];
+      }
+    }
+    print("done");
+
   }
 
   @override
@@ -81,6 +114,51 @@ class _myTicketsState extends State<myTickets> {
             child: ListTile(
               title: Text('${ticket.ticketType} - \$${ticket.price}'),
               subtitle: Text('Event Date: ${ticket.eventDate} \nStatus: ${ticket.paymentStatus}'),
+              onLongPress: () {
+                // Ensure buses are fetched before showing the dialog
+                if (!ticketBuses.containsKey(ticket.eventId)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Buses not yet fetched for this ticket.')),
+                  );
+                  return;
+                }
+
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return StatefulBuilder(
+                      builder: (context, setStateDialog) {
+                        List<String> busesForTicket = ticketBuses[ticket.eventId]!;
+
+                        return AlertDialog(
+                          title: Text('Available Buses:'),
+                          content: SizedBox(
+                            height: 100,
+                            width: 200,
+                            child: busesForTicket.isEmpty
+                                ? const Center(child: Text('No buses at this time'))
+                                : ListView.builder(
+                              itemCount: busesForTicket.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(busesForTicket[index]),
+                                );
+                              },
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('Close'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                );
+              }
+              ,
               trailing: IconButton(
                 icon: Icon(Icons.qr_code),
                 onPressed: () {
@@ -88,14 +166,17 @@ class _myTicketsState extends State<myTickets> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('QR Code for Ticket ID: ${ticket.eventId}'),
+                      title: Text('Ticket ID: ${ticket.eventId}'),
                       content: SizedBox(
                         height: 200,
                         width: 200,
-                        child: QrImageView(
-                          data: ticket.eventId, // Use ticket ID for QR code
-                          version: QrVersions.auto,
-                          size: 200.0,
+                        child:Center(
+                          child: QrImageView(
+                            data: ticket.eventId, // Use ticket ID for QR code
+                            version: QrVersions.auto,
+                            size: 200.0,
+
+                          ),
                         ),
                       ),
                       actions: [

@@ -2,6 +2,8 @@ import 'package:event_and_activities_app/screens/myEvents.dart';
 import 'package:event_and_activities_app/screens/myTickets.dart';
 import 'package:flutter/material.dart';
 
+import 'dummy.dart';
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -66,6 +68,9 @@ class ProfilePage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 // Navigate to Settings Page
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Dummy()));
               },
             ),
             ListTile(
